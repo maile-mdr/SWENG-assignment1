@@ -8,3 +8,10 @@ You should apply the branching concept in your repo for developing the program. 
 - You need to add the account ‘demonstrators’ to the repo.
 - Late submissions will result in a penalty of 4 marks per day.
 - The submission deadline is on Monday 10/10/2022 at 23:59.
+
+
+**To-do:**
+- [ ] Create the user interface (user input and output)
+- [ ] Validating user input
+- [ ] Handle string processing (ideally via a recursive method?)
+- [ ] Calculating result
