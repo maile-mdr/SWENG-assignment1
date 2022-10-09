@@ -23,6 +23,7 @@ public class Calculator {
 
         System.out.println("Calculating " + userInput);
 
+        // Removing spaces for simplicity / saving space
         String formattedEquation = userInput.replace(" ", "");
 
         System.out.println("The result is: " + computeEquation(formattedEquation));
@@ -62,7 +63,8 @@ public class Calculator {
         String operands[] = equation.split("[+*\\-]");
 
         int operandIndex = 0;
-        int operatorIndex = 1;
+        int operatorIndex = 1; // Starts at 1 because first element is an empty string "" for some strange
+                               // reason
         String lastOp = ""; // helps us switch between stacking= +/- operands and * operands
 
         // Step 1. Deal with the multiplication first
@@ -71,15 +73,18 @@ public class Calculator {
 
             if (currOperator.equals("+") || currOperator.equals("-")) {
                 if (lastOp.equals("*")) {
-                    operandIndex++;
+                    operandIndex++; // if we last multiplied a digit then we have to deal with the next set of
+                                    // characters
                 }
+                // Push operand and following operator onto stack
                 operandStack.push(Integer.parseInt(operands[operandIndex]));
-                System.out.println("Pushed " + operands[operandIndex]);
                 operatorStack.push(currOperator);
-                System.out.println("Pushed " + currOperator);
                 operandIndex++;
                 operatorIndex++;
             } else if (currOperator.equals("*")) {
+                // When we multiply, we figure out which correct operand1 to take (may or may
+                // not be in stack)
+                // We then get the next operand2 (not in stack yet)
                 int operand1;
                 if (lastOp.equals("*")) {
                     operand1 = operandStack.pop();
@@ -87,9 +92,12 @@ public class Calculator {
                     operand1 = Integer.parseInt(operands[operandIndex]);
                 }
                 int operand2 = Integer.parseInt(operands[++operandIndex]);
+
+                // Computing result
                 int result = operand1 * operand2;
+
+                // Push to stack
                 operandStack.push(result);
-                System.out.println("Multiplied and Pushed " + result);
 
                 operatorIndex++;
             }
@@ -97,15 +105,19 @@ public class Calculator {
             lastOp = currOperator;
         }
 
+        // Checking if there are any operands that haven't been visited yet (usually the
+        // case when dealing with + or -)
         if (operandIndex == operands.length - 1) {
             if (!lastOp.equals("*")) {
                 operandStack.push(Integer.parseInt(operands[operandIndex]));
-                System.out.println("Pushed " + operands[operandIndex]);
             }
         }
 
         // Step 2. Computer the rest of the equations until no more operators left
         int result = 0;
+
+        // We need to do the + and - operations in order, so we turn our stack into an
+        // array
         Object[] operandArr = operandStack.toArray();
         Object[] operatorArr = operatorStack.toArray();
 
