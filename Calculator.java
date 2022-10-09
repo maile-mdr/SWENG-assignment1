@@ -20,7 +20,9 @@ public class Calculator {
 
         System.out.println("Calculating " + userInput);
 
-        System.out.println("The result is: " + computeEquation(userInput));
+        String formattedEquation = userInput.replace(" ", "");
+
+        System.out.println("The result is: " + computeEquation(formattedEquation));
 
         scan.close();
 
@@ -41,12 +43,79 @@ public class Calculator {
 
     public static int computeEquation(String userInput) {
 
-        // Assumptions - equation is valid
+        // Assumptions - equation is valid and string is not empty
 
-        String formattedEquation = userInput.replace(" ", "");
-        System.out.println(formattedEquation);
+        // start placing operators and operands into their respective stacks
+        // if you encounter a '*', compute the equation and push the result into the
+        // operand stack
 
-        return 0;
+        Stack<String> operatorStack = new Stack<>();
+        Stack<Integer> operandStack = new Stack<>();
+
+        String equation = userInput;
+
+        // Separating operators and operands
+        String operators[] = equation.split("[0-9]+");
+        String operands[] = equation.split("[+*\\-]");
+
+        int operandIndex = 0;
+        String lastOp = "";
+
+        // Step 1. Deal with the multiplication first
+        for (int i = 1; i < operators.length; i++) {
+            operandStack.push(Integer.parseInt(operands[operandIndex]));
+            System.out.println("Pushed " + operands[operandIndex]);
+
+            String currOperator = operators[i];
+            System.out.println("Dealing with " + currOperator);
+
+            if (currOperator.equals("+") || currOperator.equals("-")) {
+                operatorStack.push(currOperator);
+                System.out.println("Pushed " + currOperator);
+                operandIndex++;
+                System.out.println("OperandIndex: " + operandIndex);
+            } else if (currOperator.equals("*")) {
+                int operand1 = operandStack.pop();
+                System.out.println("Popped " + operand1);
+                int operand2 = Integer.parseInt(operands[++operandIndex]);
+                System.out.println("Processed " + operand2);
+                int result = operand1 * operand2;
+                operandStack.push(result);
+                System.out.println("Pushed " + result);
+            }
+
+            lastOp = currOperator;
+        }
+
+        if (operandIndex == operands.length - 1) {
+            if (!lastOp.equals("*")) {
+                operandStack.push(Integer.parseInt(operands[operandIndex]));
+                System.out.println("Pushed " + operands[operandIndex]);
+            }
+        }
+
+        // Step 2. Computer the rest of the equations until no more operators left
+        while (!operatorStack.isEmpty()) {
+            int operand2 = operandStack.pop();
+            int operand1 = operandStack.pop();
+            System.out.println("Operands are: " + operand1 + " and " + operand2);
+
+            String currOperator = operatorStack.pop();
+            System.out.println("Dealing with " + currOperator);
+
+            int result = 0;
+
+            if (currOperator.equals("+")) {
+                result = operand1 + operand2;
+            } else if (currOperator.equals("-")) {
+                result = operand1 - operand2;
+            }
+
+            operandStack.push(result);
+        }
+
+        return operandStack.pop();
+
     }
 
 }
