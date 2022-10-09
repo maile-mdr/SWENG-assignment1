@@ -63,7 +63,7 @@ public class Calculator {
 
         int operandIndex = 0;
         int operatorIndex = 1;
-        String lastOp = "";
+        String lastOp = ""; // helps us switch between stacking= +/- operands and * operands
 
         // Step 1. Deal with the multiplication first
         while (operatorIndex < operators.length) {
