@@ -11,7 +11,8 @@ You should apply the branching concept in your repo for developing the program. 
 
 
 **To-do:**
-- [ ] Create the user interface (user input and output)
-- [ ] Validating user input
-- [ ] Handle string processing (ideally via a recursive method?)
-- [ ] Calculating result
+- [X] Create the user interface (user input and output)
+- [X] Validating user input
+- [X] Handle string processing (ideally via a recursive method/stack)
+- [X] Calculating result
+- [ ] Testing!
